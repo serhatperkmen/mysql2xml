@@ -1,0 +1,11 @@
+#!/bin/bash
+XML2MYSQL_HOME=`cd \`dirname $BASH_SOURCE\` && pwd `
+export XML2MYSQL_HOME
+
+PATH=$PATH:$XML2MYSQL_HOME/bin
+export PATH
+
+export alias mysql2xml='set -f;mysql2xml';mysql2xml(){ command mysql2xml "$@";set +f;}
+
+
+

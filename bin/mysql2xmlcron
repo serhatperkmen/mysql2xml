@@ -1,0 +1,25 @@
+#!/bin/bash
+
+rmday=$(date +%Y%m%d -d "-1095 days")
+path=$2.$(date +%Y%m%d%H%M%S)".xml"
+mysql2xml $1 $2 $3 $XML2MYSQL_HOME/xml/$path > /dev/null
+xml2mysql $1 root $3 $XML2MYSQL_HOME/xml/$path controldb > /dev/null
+mysql2xml $1 controldb $3 $XML2MYSQL_HOME/xml/controldb.xml > /dev/null
+awk '/<database/{close("originaldb"count".xml");count++}count{f="originaldb"count".xml";print $0 > "/tmp/"f}' $XML2MYSQL_HOME/xml/$path
+awk '/<database/{close("controldb"count".xml");count++}count{f="controldb"count".xml";print $0 > "/tmp/"f}' $XML2MYSQL_HOME/xml/controldb.xml
+sed -i 's/Create_time.*Collation=//' /tmp/originaldb1.xml
+sed -i 's/Create_time.*Collation=//' /tmp/controldb1.xml
+diff <(sed "/$2/d" /tmp/originaldb1.xml) <(sed "/controldb/d" /tmp/controldb1.xml) > /dev/null
+
+if [ $? -eq 1 ]
+then 
+	rm -r $XML2MYSQL_HOME/xml/$path
+fi
+
+rm -r $XML2MYSQL_HOME/xml/controldb.xml
+rm -r /tmp/originaldb1.xml
+rm -r /tmp/controldb1.xml
+rm -r /tmp/originaldb2.xml
+rm -r /tmp/controldb2.xml
+mysqladmin -f -u root -p$3 drop controldb > /dev/null
+find $XML2MYSQL_HOME/xml -type f ! -newerct $rmday -delete

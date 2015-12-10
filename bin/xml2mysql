@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ $(whoami) != "serhat" ] 
+then
+echo "Only root allowed!"
+elif [ "$1" == "" ] 
+then
+echo "Usage: xml2mysql hostname username password xmlpath newdbname[optional]"
+elif [ "$2" == "" ] 
+then
+echo "Usage: xml2mysql hostname username password xmlpath newdbname[optional]"
+elif [ "$3" == "" ] 
+then
+echo "Usage: xml2mysql hostname username password xmlpath newdbname[optional]"
+elif [ "$4" == "" ] 
+then
+echo "Usage: xml2mysql hostname username password xmlpath newdbname[optional]"
+elif [ "$5" == "" ] 
+then
+converter xml2mysql $1 $2 $3 $4
+	if [ $? == 0 ]
+	then
+	exit 1
+	fi
+else
+converter xml2mysql $1 $2 $3 $4 $5
+	if [ $? == 0 ]
+	then
+	exit 1
+	fi
+fi
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$1" != "" ] && [ "$2" != "" ] && [ "$3" != "" ] && [ "$4" == "" ]
+then 
+	converter mysql2xml $1 $2 $3
+	if [ $? != 0 ]
+	then
+		echo "Incomplete"
+		exit 1
+	fi
+
+elif [ "$1" != "" ] && [ "$2" != "" ] && [ "$3" != "" ] && [ "$4" != "" ] && [ "$5" == "" ]
+then 
+	converter mysql2xml $1 $2 $3 $4
+	if [ $? != 0 ]
+	then
+		echo "Incomplete"
+		exit 1
+	fi
+else
+	echo "Usage:  mysql2xml hostname databasename rootpassword xmldestinationpath[optional]"
+fi
+	

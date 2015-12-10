@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [ "$1" == "mysql2xml" ] 
+then
+	if [ "$5" == "" ]
+	then	
+		echo "Pease wait $3 database exporting..."
+		file=$3.$(date +%Y%m%d%H%M%S)
+		mysqldump --xml -h $2 -u root -p$4 --single-transaction --databases $3 INFORMATION_SCHEMA > $XML2MYSQL_HOME/xml/$file".xml"
+		if [ $? == 0 ]
+		then
+			echo "$file.xml created."
+		else
+			if [ -f $XML2MYSQL_HOME/xml/$file".xml" ]
+			then
+				rm -r $XML2MYSQL_HOME/xml/$file".xml"
+			fi
+			exit 1
+		fi
+	else
+		echo "Pease wait $3 database exporting..."
+		mysqldump --xml -h $2 -u root -p$4 --single-transaction --databases $3 INFORMATION_SCHEMA > $5
+		if [ $? -eq 0 ]
+		then
+			echo "$5 created."
+		else
+			if [ -f $5 ]
+			then
+				rm -r $5
+			fi
+		exit 1
+		fi
+	fi
+else
+	if [ "$6" == "" ]
+	then
+		var="default"
+		java -jar $XML2MYSQL_HOME/bin/Xml2Mysql-1.0.0.jar $2 $3 $4 $5 $var
+	else
+		java -jar $XML2MYSQL_HOME/bin/Xml2Mysql-1.0.0.jar $2 $3 $4 $5 $6
+	fi
+fi

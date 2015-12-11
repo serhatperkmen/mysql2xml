@@ -6,7 +6,7 @@ then
 	crontab -l > /tmp/crontmp 2>/dev/null
 	echo "XML2MYSQL_HOME=$XML2MYSQL_HOME" >> /tmp/crontmp
 	echo "PATH=$PATH" >> /tmp/crontmp
-	echo '*' '*' '*' '*' '*' "mysql2xmlcron localhost username passwd" >> /tmp/crontmp
+	echo '*' '*' '*' '*' '*' "mysql2xmlcron hostname db_user db_passwd" >> /tmp/crontmp
 	crontab /tmp/crontmp
 	rm -r /tmp/crontmp
 fi
